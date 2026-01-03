@@ -125,21 +125,34 @@ class ErgonomicsARApp {
         const scene = document.querySelector('a-scene');
 
         if (scene) {
+            // Fallback timeout - hide loading after 5 seconds max
+            const fallbackTimeout = setTimeout(() => {
+                console.log('Loading timeout - hiding loading screen');
+                this.hideLoading();
+            }, 5000);
+
             // Check if scene is loaded
             if (scene.hasLoaded) {
                 console.log('AR Scene already loaded');
-                setTimeout(() => this.hideLoading(), 2000);
+                clearTimeout(fallbackTimeout);
+                setTimeout(() => this.hideLoading(), 1000);
             } else {
                 scene.addEventListener('loaded', () => {
                     console.log('AR Scene loaded successfully');
-                    setTimeout(() => this.hideLoading(), 2000);
+                    clearTimeout(fallbackTimeout);
+                    setTimeout(() => this.hideLoading(), 1000);
                 });
             }
 
             // Add render start event
             scene.addEventListener('renderstart', () => {
                 console.log('AR rendering started');
+                clearTimeout(fallbackTimeout);
+                this.hideLoading();
             });
+        } else {
+            console.error('AR scene not found');
+            this.hideLoading();
         }
     }
 
