@@ -1,0 +1,47 @@
+{
+  "name": "ergonomic-ar",
+  "version": "1.0.0",
+  "description": "Augmented reality web application for visualizing safe ergonomic zones on workplace desks",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve .",
+    "deploy": "gh-pages -d ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ergonomic-ar.git"
+  },
+  "keywords": [
+    "augmented-reality",
+    "webAR",
+    "ergonomics",
+    "workplace-health",
+    "ar.js",
+    "aframe",
+    "desk-setup",
+    "office-ergonomics",
+    "health-tech",
+    "qr-code"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-username/ergonomic-ar/issues"
+  },
+  "homepage": "https://github.com/your-username/ergonomic-ar#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "gh-pages": "^6.1.0",
+    "serve": "^14.2.1"
+  },
+  "browserslist": [
+    "iOS >= 11",
+    "Android >= 7",
+    "Chrome >= 67",
+    "Safari >= 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,11 @@
+# Robots.txt for Desk Ergonomics AR
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-username.github.io/ergonomic-ar/sitemap.xml
+
+# Disallow specific paths if needed
+# Disallow: /temp/
+# Disallow: /private/

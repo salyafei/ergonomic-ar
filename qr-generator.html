@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Desk Ergonomics AR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .secondary-btn:hover {
+            background: #e0e0e0;
+        }
+
+        #qr-output {
+            text-align: center;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            display: none;
+        }
+
+        #qr-output.active {
+            display: block;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .instructions h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #333;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .info-box p {
+            color: #856404;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            .input-group,
+            .button-group,
+            .subtitle {
+                display: none;
+            }
+
+            #qr-output {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 QR Code Generator</h1>
+        <p class="subtitle">Generate a QR code for your Desk Ergonomics AR app</p>
+
+        <div class="input-group">
+            <label for="app-url">Enter Your App URL:</label>
+            <input
+                type="text"
+                id="app-url"
+                placeholder="https://your-username.github.io/ergonomic-ar/"
+                value="">
+        </div>
+
+        <div class="button-group">
+            <button class="primary-btn" onclick="generateQR()">Generate QR Code</button>
+            <button class="secondary-btn" onclick="printQR()">Print QR Code</button>
+        </div>
+
+        <div id="qr-output">
+            <h2>Your QR Code</h2>
+            <div id="qrcode"></div>
+            <div class="instructions">
+                <h3>📋 How to Use:</h3>
+                <ol>
+                    <li>Print this page (Ctrl/Cmd + P)</li>
+                    <li>Cut out the QR code</li>
+                    <li>Place it on your desk surface</li>
+                    <li>Scan with your smartphone to launch the AR app</li>
+                </ol>
+            </div>
+            <div class="info-box">
+                <p><strong>💡 Tip:</strong> Laminate the QR code or place it in a sheet protector for durability</p>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>ℹ️ About This Tool</h3>
+            <ol>
+                <li>Enter the URL where your AR app is hosted (e.g., GitHub Pages URL)</li>
+                <li>Click "Generate QR Code" to create the scannable code</li>
+                <li>Print the QR code and place it on your desk</li>
+                <li>Anyone can scan it to instantly access the AR experience</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // Auto-fill with current URL if on same domain
+        window.addEventListener('load', () => {
+            const urlInput = document.getElementById('app-url');
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                const baseUrl = window.location.origin + window.location.pathname.replace('qr-generator.html', '');
+                urlInput.value = baseUrl;
+            }
+        });
+
+        let qrcodeInstance = null;
+
+        function generateQR() {
+            const urlInput = document.getElementById('app-url');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            // Validate URL
+            try {
+                new URL(url);
+            } catch (e) {
+                alert('Please enter a valid URL (must start with http:// or https://)');
+                return;
+            }
+
+            // Clear previous QR code
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '';
+
+            // Generate new QR code
+            qrcodeInstance = new QRCode(qrcodeDiv, {
+                text: url,
+                width: 256,
+                height: 256,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Show output
+            document.getElementById('qr-output').classList.add('active');
+
+            // Scroll to QR code
+            setTimeout(() => {
+                qrcodeDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function printQR() {
+            const qrOutput = document.getElementById('qr-output');
+
+            if (!qrOutput.classList.contains('active')) {
+                alert('Please generate a QR code first');
+                return;
+            }
+
+            window.print();
+        }
+
+        // Allow Enter key to generate QR
+        document.getElementById('app-url').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+    </script>
+</body>
+</html>
