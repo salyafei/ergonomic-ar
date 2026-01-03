@@ -1,0 +1,21 @@
+# ADNOC AR Marker Pattern File
+#
+# THIS IS A PLACEHOLDER FILE
+#
+# To use this application with the ADNOC logo marker, you need to:
+#
+# 1. Visit: https://www.adnoc.ae
+# 2. Download the ADNOC logo
+# 3. Generate a custom marker pattern using:
+#    https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
+# 4. Replace this file with your generated .patt file
+# 5. Name it: adnoc-marker.patt
+#
+# For detailed instructions, see: ADNOC-MARKER-SETUP.md
+#
+# The generated .patt file will contain a matrix of numbers that AR.js uses
+# to recognize and track the ADNOC logo marker.
+#
+# File format: Plain text with numerical pattern data
+# Expected size: ~1-2 KB
+#

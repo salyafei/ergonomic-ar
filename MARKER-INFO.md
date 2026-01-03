@@ -1,21 +1,32 @@
 # 📐 AR Marker Information
 
-## About the Hiro Marker
+## About the ADNOC Custom Marker
 
-This application uses the **Hiro marker** pattern for AR tracking. The Hiro marker is a widely-used, open-source marker pattern that works reliably with AR.js.
+This application uses a **custom ADNOC logo marker** pattern for AR tracking. The ADNOC-branded marker provides a professional, corporate identity while maintaining full AR functionality with AR.js.
 
 ## Marker Download
 
-### Online Download
+### Using the ADNOC Marker Generator
 
-Download the official Hiro marker from:
+The application includes a dedicated ADNOC Marker Generator tool:
+
+1. **Click** "Generate ADNOC Marker" button in the app
+2. **Follow** the step-by-step instructions
+3. **Download** the ADNOC logo from www.adnoc.ae
+4. **Generate** the custom marker pattern using AR.js tools
+5. **Print** the generated marker
+
+### Detailed Setup Guide
+
+For complete instructions, see: **[ADNOC-MARKER-SETUP.md](ADNOC-MARKER-SETUP.md)**
+
+### Alternative: Standard Hiro Marker (Fallback)
+
+If you prefer to use the standard marker instead of the ADNOC logo:
 ```
 https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png
 ```
-
-### In-App Download
-
-Use the "Download Desk Marker" button in the application to access the marker directly.
+Note: The application is configured for ADNOC marker by default.
 
 ## Printing Guidelines
 

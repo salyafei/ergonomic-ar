@@ -56,10 +56,12 @@ A comprehensive augmented reality web application that visualizes safe ergonomic
    https://your-username.github.io/ergonomic-ar/
    ```
 
-2. **Download and Print the Marker**
-   - Click "Download Desk Marker" button
-   - Print on white A4/Letter paper
+2. **Download and Print the ADNOC Marker**
+   - Click "Download Desk Marker" button (opens ADNOC Marker Generator)
+   - Follow instructions to generate custom ADNOC logo marker
+   - Print the generated marker on white A4/Letter paper
    - Place marker flat on your desk
+   - See [ADNOC-MARKER-SETUP.md](ADNOC-MARKER-SETUP.md) for detailed instructions
 
 3. **Start AR Experience**
    - Click "Start AR Experience"
@@ -112,7 +114,7 @@ A comprehensive augmented reality web application that visualizes safe ergonomic
 ## 🛠️ Technology Stack
 
 - **AR Framework**: AR.js 3.x with A-Frame 1.4.2
-- **Marker Detection**: Hiro marker pattern recognition
+- **Marker Detection**: Custom ADNOC logo pattern recognition
 - **WebXR**: Native browser AR capabilities
 - **Responsive Design**: Mobile-first CSS3
 - **No Dependencies**: Pure vanilla JavaScript
@@ -130,9 +132,10 @@ A comprehensive augmented reality web application that visualizes safe ergonomic
    - Enables marker tracking
 
 3. **Marker Detection**
-   - Uses Hiro marker pattern (included)
+   - Uses custom ADNOC logo marker pattern
    - Computer vision detects marker position
    - Establishes AR coordinate system
+   - Branded AR experience
 
 4. **Zone Rendering**
    - 3D zones rendered relative to marker

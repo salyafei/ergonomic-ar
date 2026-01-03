@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADNOC AR Marker Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #006341 0%, #004d32 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            color: #333;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #006341;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .step-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #006341;
+        }
+
+        .step-section h2 {
+            color: #006341;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .step-section h3 {
+            color: #004d32;
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .instruction-list {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .instruction-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .url-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #006341;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            color: #006341;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 3px dashed #006341;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: #f0f7f4;
+            border-color: #004d32;
+        }
+
+        .upload-area.dragover {
+            background: #e6f2ed;
+            border-color: #006341;
+            border-style: solid;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn-primary {
+            background: #006341;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #004d32;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 99, 65, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        #preview-area {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #preview-area.active {
+            display: block;
+        }
+
+        #preview-image {
+            max-width: 400px;
+            max-height: 400px;
+            border-radius: 8px;
+            border: 3px solid #006341;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            color: #1565C0;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .download-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .download-section.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .step-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 ADNOC AR Marker Generator</h1>
+        <p class="subtitle">Create a custom AR marker using the ADNOC logo</p>
+
+        <div class="alert alert-info">
+            <strong>📌 Important:</strong> This tool helps you create a custom AR marker pattern file (.patt) from the ADNOC logo. The generated marker will be used for AR tracking in the Desk Ergonomics AR application.
+        </div>
+
+        <!-- Step 1: Download ADNOC Logo -->
+        <div class="step-section">
+            <h2>Step 1: Download ADNOC Logo</h2>
+
+            <h3>Option A: From ADNOC Website</h3>
+            <ol class="instruction-list">
+                <li>Visit the ADNOC website:
+                    <div class="url-box">https://www.adnoc.ae</div>
+                </li>
+                <li>Right-click on the ADNOC logo (usually in the top-left header)</li>
+                <li>Select "Save image as..." or "Copy image"</li>
+                <li>Save as <code>adnoc-logo.png</code> or <code>adnoc-logo.jpg</code></li>
+            </ol>
+
+            <h3>Option B: Use AR.js Marker Generator</h3>
+            <p>Visit the official AR.js marker training generator:</p>
+            <div class="url-box">https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html</div>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ Logo Requirements:</strong>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>High contrast (preferably logo on white background)</li>
+                    <li>Square or near-square aspect ratio (recommended)</li>
+                    <li>Minimum 512x512 pixels</li>
+                    <li>Clear, sharp image (no blur)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 2: Upload and Preview -->
+        <div class="step-section">
+            <h2>Step 2: Upload ADNOC Logo</h2>
+
+            <div class="upload-area" id="upload-area">
+                <div style="font-size: 3rem; margin-bottom: 10px;">📁</div>
+                <h3>Drag & Drop ADNOC Logo Here</h3>
+                <p style="margin: 10px 0; color: #666;">or</p>
+                <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                    Browse Files
+                </button>
+                <input type="file" id="file-input" accept="image/*">
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                    Supported formats: PNG, JPG, JPEG
+                </p>
+            </div>
+
+            <div id="preview-area">
+                <h3>Logo Preview:</h3>
+                <img id="preview-image" src="" alt="Logo Preview">
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="resetUpload()">Choose Different Image</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Generate Marker -->
+        <div class="step-section">
+            <h2>Step 3: Generate AR Marker Pattern</h2>
+
+            <div class="alert alert-info">
+                <strong>🔧 Generate Custom Marker:</strong> Use the AR.js marker generator to create a pattern file from your logo.
+            </div>
+
+            <h3>Using AR.js Online Generator:</h3>
+            <ol class="instruction-list">
+                <li>Visit the AR.js Pattern Marker Generator:
+                    <div class="url-box">https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html</div>
+                </li>
+                <li>Upload your ADNOC logo image</li>
+                <li>The tool will generate a marker pattern</li>
+                <li>Download the generated <code>.patt</code> file as <code>adnoc-marker.patt</code></li>
+                <li>Also download the marker image (black border version) for printing</li>
+            </ol>
+
+            <div class="alert alert-success">
+                <strong>✅ Pro Tip:</strong> The generator creates both:
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Pattern file (.patt)</strong> - Used by the AR app for tracking</li>
+                    <li><strong>Marker image (PNG)</strong> - Print this on paper for physical tracking</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 4: Integration Instructions -->
+        <div class="step-section">
+            <h2>Step 4: Integrate into AR Application</h2>
+
+            <h3>A. Add Pattern File to Project:</h3>
+            <ol class="instruction-list">
+                <li>Place <code>adnoc-marker.patt</code> in your project's root directory</li>
+                <li>Also save the printable marker image as <code>adnoc-marker.png</code></li>
+            </ol>
+
+            <h3>B. Update index.html:</h3>
+            <p>The AR application has been pre-configured to use custom markers. Simply replace the pattern file path:</p>
+
+            <div class="alert alert-warning">
+                <strong>📝 Note:</strong> The application code has already been updated to look for <code>adnoc-marker.patt</code>. Just add the file to your repository.
+            </div>
+
+            <h3>C. Print the Marker:</h3>
+            <ol class="instruction-list">
+                <li>Print <code>adnoc-marker.png</code> on white A4/Letter paper</li>
+                <li>Use high quality settings (300 DPI minimum)</li>
+                <li>Print at actual size (100% scale, no fitting)</li>
+                <li>Laminate or protect with clear sheet</li>
+                <li>Place on your desk</li>
+            </ol>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="step-section">
+            <h2>🔗 Quick Links</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                <a href="https://www.adnoc.ae" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+                    Visit ADNOC Website
+                </a>
+                <a href="https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+                    AR.js Marker Generator
+                </a>
+                <a href="../index.html" class="btn btn-secondary" style="text-decoration: none;">
+                    Back to AR App
+                </a>
+            </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 30px;">
+            <strong>📚 Need Help?</strong> Check the ADNOC-MARKER-SETUP.md file in the documentation for detailed instructions and troubleshooting.
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const previewArea = document.getElementById('preview-area');
+        const previewImage = document.getElementById('preview-image');
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewArea.classList.add('active');
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetUpload() {
+            previewArea.classList.remove('active');
+            uploadArea.style.display = 'block';
+            fileInput.value = '';
+            previewImage.src = '';
+        }
+    </script>
+</body>
+</html>

@@ -45,7 +45,7 @@ class ErgonomicsARApp {
     setupAREvents() {
         // Wait for AR.js to load
         window.addEventListener('load', () => {
-            const marker = document.querySelector('#marker-hiro');
+            const marker = document.querySelector('#marker-adnoc');
             const statusIndicator = document.getElementById('marker-status');
             const statusText = statusIndicator?.querySelector('.status-text');
 
@@ -144,32 +144,25 @@ class ErgonomicsARApp {
     }
 
     downloadMarker() {
-        console.log('Preparing marker download...');
+        console.log('Opening ADNOC marker generator...');
 
-        // Create a temporary link to download the Hiro marker
-        const markerUrl = 'https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png';
-
-        // Create download link
-        const link = document.createElement('a');
-        link.href = markerUrl;
-        link.download = 'desk-marker.png';
-        link.target = '_blank';
-
-        // Show instructions
+        // Show instructions for ADNOC marker
         const instructions = `
-📄 Marker Download Instructions:
+📄 ADNOC Marker Setup Instructions:
 
-1. Right-click the marker image and save it
-2. Print it on white paper (A4 or Letter size)
-3. Place it flat on your desk
-4. Make sure it's well-lit and visible
-5. Return here and tap "Start AR Experience"
+This app uses a custom ADNOC logo marker for AR tracking.
 
-Tip: For best results, laminate the marker or place it in a clear sheet protector.
+You'll be redirected to the ADNOC Marker Generator where you can:
+1. Download the ADNOC logo
+2. Generate a custom AR marker pattern
+3. Get the printable marker image
+4. Follow setup instructions
+
+Click OK to open the ADNOC Marker Generator.
         `;
 
-        if (confirm(instructions + '\n\nClick OK to open the marker in a new tab.')) {
-            window.open(markerUrl, '_blank');
+        if (confirm(instructions)) {
+            window.open('adnoc-marker-generator.html', '_blank');
         }
     }
 
