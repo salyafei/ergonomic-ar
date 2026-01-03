@@ -144,25 +144,33 @@ class ErgonomicsARApp {
     }
 
     downloadMarker() {
-        console.log('Opening ADNOC marker generator...');
+        console.log('Opening AR marker...');
 
-        // Show instructions for ADNOC marker
+        // Show instructions for AR marker
         const instructions = `
-📄 ADNOC Marker Setup Instructions:
+📄 AR Marker Instructions:
 
-This app uses a custom ADNOC logo marker for AR tracking.
+You can use the marker in two ways:
 
-You'll be redirected to the ADNOC Marker Generator where you can:
-1. Download the ADNOC logo
-2. Generate a custom AR marker pattern
-3. Get the printable marker image
-4. Follow setup instructions
+1. DISPLAY ON SCREEN:
+   - Open the marker on your computer/tablet
+   - Point your phone camera at the screen
+   - Great for quick testing
 
-Click OK to open the ADNOC Marker Generator.
+2. PRINT ON PAPER:
+   - Print the marker on white paper
+   - Place on your desk
+   - Better for permanent setup
+
+The marker can be anywhere - the app just needs
+to see it through your phone's camera!
+
+Click OK to view the AR marker.
         `;
 
         if (confirm(instructions)) {
-            window.open('adnoc-marker-generator.html', '_blank');
+            // Open the marker image directly
+            window.open('adnoc-marker.png', '_blank');
         }
     }
 
