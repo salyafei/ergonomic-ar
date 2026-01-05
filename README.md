@@ -51,23 +51,24 @@ A comprehensive augmented reality web application that visualizes safe ergonomic
 
 ### For Users
 
-1. **Visit the Web App**
-   ```
-   https://your-username.github.io/ergonomic-ar/
-   ```
+1. **Check Device Compatibility**
+   - **iOS Users:** iOS 15.4+ with Safari - [**Enable WebXR first!**](IOS-SETUP.md)
+   - **Android Users:** Android 9+ with Chrome 87+ (works by default)
+   - Must use HTTPS connection
 
-2. **Download and Print the ADNOC Marker**
-   - Click "Download Desk Marker" button (opens ADNOC Marker Generator)
-   - Follow instructions to generate custom ADNOC logo marker
-   - Print the generated marker on white A4/Letter paper
-   - Place marker flat on your desk
-   - See [ADNOC-MARKER-SETUP.md](ADNOC-MARKER-SETUP.md) for detailed instructions
+2. **Visit the Web App**
+   ```
+   https://salyafei.github.io/ergonomic-ar/
+   ```
 
 3. **Start AR Experience**
    - Click "Start AR Experience"
    - Allow camera access when prompted
-   - Point camera at the marker on your desk
-   - View ergonomic zones overlaid on your desk!
+   - Point camera at your desk surface
+   - Tap anywhere to place ergonomic zones
+   - View zones overlaid on your desk in real-time!
+
+**📱 iOS Users:** WebXR must be enabled in Safari settings. [See detailed iOS setup guide →](IOS-SETUP.md)
 
 ### For Developers
 

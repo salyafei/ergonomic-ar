@@ -75,19 +75,45 @@ class ErgonomicsARSurface {
 
     showCompatibilityWarning() {
         const infoBox = document.querySelector('.info-box');
+        const ua = navigator.userAgent;
+        const isIOS = /iPad|iPhone|iPod/.test(ua);
+
         if (infoBox) {
             infoBox.style.borderColor = '#F44336';
-            infoBox.innerHTML = `
+
+            let warningHTML = `
                 <h3>⚠️ Device Not Compatible</h3>
                 <p><strong>WebXR is not supported on this device.</strong></p>
-                <p class="small">Requirements:</p>
-                <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                    <li>iOS 15.4+ with Safari</li>
-                    <li>Android 9+ with Chrome 87+</li>
-                    <li>HTTPS connection required</li>
-                </ul>
-                <p class="small" style="margin-top: 10px;">Current: ${this.getDeviceInfo()}</p>
             `;
+
+            if (isIOS) {
+                warningHTML += `
+                    <p class="small" style="margin-top: 15px; font-weight: bold; color: #FFC107;">📱 iOS Users: Enable WebXR in Safari</p>
+                    <ol style="text-align: left; margin: 10px 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
+                        <li>Open <strong>Settings</strong> app</li>
+                        <li>Scroll down and tap <strong>Safari</strong></li>
+                        <li>Scroll down and tap <strong>Advanced</strong></li>
+                        <li>Tap <strong>Feature Flags</strong> (or <strong>Experimental Features</strong>)</li>
+                        <li>Enable <strong>WebXR Device API</strong></li>
+                        <li>Close Safari completely and reopen</li>
+                        <li>Return to this page</li>
+                    </ol>
+                    <p class="small" style="margin-top: 10px;">Requires: iOS 15.4 or later</p>
+                `;
+            } else {
+                warningHTML += `
+                    <p class="small">Requirements:</p>
+                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                        <li>iOS 15.4+ with Safari (enable WebXR in settings)</li>
+                        <li>Android 9+ with Chrome 87+</li>
+                        <li>HTTPS connection required</li>
+                    </ul>
+                `;
+            }
+
+            warningHTML += `<p class="small" style="margin-top: 10px;">Current: ${this.getDeviceInfo()}</p>`;
+
+            infoBox.innerHTML = warningHTML;
         }
     }
 
