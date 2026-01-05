@@ -88,17 +88,16 @@ class ErgonomicsARSurface {
 
             if (isIOS) {
                 warningHTML += `
-                    <p class="small" style="margin-top: 15px; font-weight: bold; color: #FFC107;">📱 iOS Users: Enable WebXR in Safari</p>
+                    <p class="small" style="margin-top: 15px; font-weight: bold; color: #FFC107;">📱 iOS Users: Enable WebXR</p>
                     <ol style="text-align: left; margin: 10px 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
-                        <li>Open <strong>Settings</strong> app</li>
-                        <li>Scroll down and tap <strong>Safari</strong></li>
-                        <li>Scroll down and tap <strong>Advanced</strong></li>
-                        <li>Tap <strong>Feature Flags</strong> (or <strong>Experimental Features</strong>)</li>
-                        <li>Enable <strong>WebXR Device API</strong></li>
+                        <li><strong>Check iOS version:</strong> Settings → General → About (need 15.4+)</li>
+                        <li>Open <strong>Settings</strong> → <strong>Safari</strong> → <strong>Advanced</strong></li>
+                        <li>Tap <strong>Feature Flags</strong></li>
+                        <li>Look for: <strong>WebXR</strong>, <strong>WebXR Device API</strong>, or any XR flag</li>
+                        <li>Enable all WebXR-related flags</li>
                         <li>Close Safari completely and reopen</li>
-                        <li>Return to this page</li>
                     </ol>
-                    <p class="small" style="margin-top: 10px;">Requires: iOS 15.4 or later</p>
+                    <p class="small" style="margin-top: 10px; color: #F44336;"><strong>No WebXR flags?</strong> Your iOS version may be too old (need 15.4+)</p>
                 `;
             } else {
                 warningHTML += `

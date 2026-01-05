@@ -6,13 +6,24 @@ WebXR is an **experimental feature** in iOS Safari and needs to be manually enab
 
 ## Step-by-Step Instructions
 
-### 1. Check Your iOS Version
-- Go to **Settings** > **General** > **About**
-- Look at **Software Version**
-- You need **iOS 15.4 or later**
+### 1. Check Your iOS Version First!
 
-If your iOS version is below 15.4, you'll need to update iOS first:
+**This is critical - check this first:**
+
+1. Go to **Settings** > **General** > **About**
+2. Look at **Software Version**
+3. You need **iOS 15.4 or later** (preferably iOS 16+)
+
+**Examples of version numbers:**
+- ✅ iOS 16.5 - **Works** (WebXR available)
+- ✅ iOS 15.4 - **Works** (WebXR available)
+- ❌ iOS 15.3 - **Won't work** (WebXR not available)
+- ❌ iOS 14.x - **Won't work** (WebXR not available)
+
+**If your iOS version is below 15.4:**
 - Go to **Settings** > **General** > **Software Update**
+- Update to at least iOS 15.4 or later
+- WebXR will NOT work on iOS 15.3 or earlier, no matter what you do
 
 ### 2. Enable WebXR in Safari
 
@@ -22,10 +33,15 @@ Follow these exact steps:
 2. **Scroll down** and tap **Safari**
 3. **Scroll down** to the bottom and tap **Advanced**
 4. Tap **Feature Flags** (on some iOS versions this is called **Experimental Features**)
-5. **Find and enable** the following:
+5. **Scroll through the list** and look for ANY of these names:
    - ✅ **WebXR Device API**
-   - ✅ **WebXR Augmented Reality Module** (if available)
-6. **Close Settings**
+   - ✅ **WebXR** (just "WebXR" by itself)
+   - ✅ **WebXR Augmented Reality Module**
+   - ✅ Any flag containing "XR" or "WebXR"
+6. **Enable all WebXR-related flags you find**
+7. **Close Settings**
+
+**⚠️ Can't find any WebXR flags?** This means your iOS version doesn't support WebXR. See "Check Your iOS Version" below.
 
 ### 3. Restart Safari
 
@@ -47,6 +63,18 @@ Important: You must fully close and reopen Safari:
 ### "Feature Flags" option not available
 - Update to the latest iOS version
 - Older versions may call it "Experimental Features" instead
+- If you still can't find it, your device may not support it
+
+### No WebXR flags in the Feature Flags list
+**This is the most common issue!**
+
+If you open Feature Flags but can't find ANY WebXR-related options:
+1. **Check your exact iOS version:** Settings > General > About > Software Version
+2. **If you're on iOS 15.0-15.3:** WebXR was added in iOS 15.4, you MUST update
+3. **If you're on iOS 14.x or earlier:** WebXR is not available, you MUST update to iOS 15.4+
+4. **If you're on iOS 15.4+:** Try searching the flags list more carefully - look for ANY flag with "XR" in the name
+
+**Note:** Some older iPhone models may not support iOS 15.4+. Check if your device can update to iOS 15.4 or later.
 
 ### Button still says "WebXR Not Supported"
 - Make sure you completely closed and reopened Safari
