@@ -10,6 +10,13 @@
     <meta name="author" content="Desk Ergonomics AR">
     <meta name="theme-color" content="#667eea">
 
+    <!-- Force HTTPS redirect for WebXR -->
+    <script>
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace('https:' + window.location.href.substring(window.location.protocol.length));
+        }
+    </script>
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
 
@@ -51,8 +58,8 @@
 
             <div class="info-box">
                 <h3>📱 Device Compatibility</h3>
-                <p>Works on iOS Safari 15+ and Android Chrome 87+</p>
-                <p class="small">WebXR and camera access required</p>
+                <p>Works on iOS 15.4+ (Safari) and Android 9+ (Chrome 87+)</p>
+                <p class="small">Requires HTTPS, WebXR support, and camera access</p>
             </div>
         </div>
     </div>

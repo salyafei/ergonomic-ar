@@ -42,16 +42,79 @@ class ErgonomicsARSurface {
     }
 
     async checkARSupport() {
-        if (navigator.xr) {
+        const startBtn = document.getElementById('start-ar-btn');
+
+        if (!navigator.xr) {
+            console.error('WebXR not available');
+            if (startBtn) {
+                startBtn.disabled = true;
+                startBtn.textContent = 'WebXR Not Supported';
+                startBtn.style.opacity = '0.5';
+            }
+            this.showCompatibilityWarning();
+            return;
+        }
+
+        try {
             const supported = await navigator.xr.isSessionSupported('immersive-ar');
             console.log('WebXR AR supported:', supported);
 
             if (!supported) {
                 console.warn('WebXR AR not supported on this device');
+                if (startBtn) {
+                    startBtn.disabled = true;
+                    startBtn.textContent = 'AR Not Available';
+                    startBtn.style.opacity = '0.5';
+                }
+                this.showCompatibilityWarning();
             }
-        } else {
-            console.error('WebXR not available');
+        } catch (error) {
+            console.error('Error checking AR support:', error);
         }
+    }
+
+    showCompatibilityWarning() {
+        const infoBox = document.querySelector('.info-box');
+        if (infoBox) {
+            infoBox.style.borderColor = '#F44336';
+            infoBox.innerHTML = `
+                <h3>⚠️ Device Not Compatible</h3>
+                <p><strong>WebXR is not supported on this device.</strong></p>
+                <p class="small">Requirements:</p>
+                <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                    <li>iOS 15.4+ with Safari</li>
+                    <li>Android 9+ with Chrome 87+</li>
+                    <li>HTTPS connection required</li>
+                </ul>
+                <p class="small" style="margin-top: 10px;">Current: ${this.getDeviceInfo()}</p>
+            `;
+        }
+    }
+
+    getDeviceInfo() {
+        const ua = navigator.userAgent;
+        const isIOS = /iPad|iPhone|iPod/.test(ua);
+        const isAndroid = /Android/.test(ua);
+        const isSafari = /Safari/.test(ua) && !/Chrome/.test(ua);
+        const isChrome = /Chrome/.test(ua);
+
+        let deviceInfo = 'Unknown device';
+
+        if (isIOS) {
+            const match = ua.match(/OS (\d+)_(\d+)/);
+            if (match) {
+                const version = `${match[1]}.${match[2]}`;
+                deviceInfo = `iOS ${version} - ${isSafari ? 'Safari' : 'Other browser'}`;
+            } else {
+                deviceInfo = `iOS - ${isSafari ? 'Safari' : 'Other browser'}`;
+            }
+        } else if (isAndroid) {
+            const match = ua.match(/Android (\d+)/);
+            const version = match ? match[1] : 'Unknown';
+            deviceInfo = `Android ${version} - ${isChrome ? 'Chrome' : 'Other browser'}`;
+        }
+
+        return deviceInfo;
     }
 
     async startARExperience() {
@@ -413,7 +476,26 @@ class ErgonomicsARSurface {
     }
 
     showError(message) {
-        alert(`⚠️ AR Error\n\n${message}\n\nPlease ensure:\n• You're using iOS Safari 15+ or Android Chrome 87+\n• Camera permission is granted\n• You're on HTTPS`);
+        const isHTTPS = location.protocol === 'https:';
+        const deviceInfo = this.getDeviceInfo();
+
+        let helpText = `⚠️ AR Error\n\n${message}\n\n`;
+
+        if (!isHTTPS) {
+            helpText += `🔒 CRITICAL: You must use HTTPS!\n`;
+            helpText += `Current: ${location.protocol}\n`;
+            helpText += `Try: https://${location.host}${location.pathname}\n\n`;
+        }
+
+        helpText += `Requirements:\n`;
+        helpText += `• iOS 15.4+ with Safari browser\n`;
+        helpText += `• Android 9+ with Chrome 87+\n`;
+        helpText += `• HTTPS connection (required)\n`;
+        helpText += `• Camera permission granted\n\n`;
+        helpText += `Your device: ${deviceInfo}\n`;
+        helpText += `Protocol: ${location.protocol}`;
+
+        alert(helpText);
     }
 }
 
