@@ -19,8 +19,57 @@ class ErgonomicsARSurface {
 
     init() {
         console.log('Initializing Surface Detection AR...');
+        this.detectDevice();
         this.setupEventListeners();
         this.checkARSupport();
+    }
+
+    detectDevice() {
+        const ua = navigator.userAgent;
+        const isIOS = /iPad|iPhone|iPod/.test(ua);
+        const isAndroid = /Android/.test(ua);
+
+        const quicklookBtn = document.getElementById('quicklook-btn');
+        const webxrBtn = document.getElementById('start-ar-btn');
+        const compatMessage = document.getElementById('compat-message');
+        const compatDetails = document.getElementById('compat-details');
+
+        if (isIOS) {
+            // Show AR Quick Look for iOS (works on iOS 12+, no WebXR needed!)
+            if (quicklookBtn) quicklookBtn.style.display = 'block';
+            if (webxrBtn) webxrBtn.style.display = 'none';
+
+            if (compatMessage) {
+                compatMessage.textContent = '✅ iOS Detected - Using AR Quick Look';
+            }
+            if (compatDetails) {
+                compatDetails.innerHTML = 'Tap the button to launch native iOS AR viewer<br>Works on iPhone 6s and later, no settings required!';
+            }
+
+            console.log('iOS detected - using AR Quick Look instead of WebXR');
+        } else if (isAndroid) {
+            // Show WebXR for Android
+            if (quicklookBtn) quicklookBtn.style.display = 'none';
+            if (webxrBtn) webxrBtn.style.display = 'block';
+
+            if (compatMessage) {
+                compatMessage.textContent = 'Android Detected - Using WebXR';
+            }
+            if (compatDetails) {
+                compatDetails.textContent = 'Requires Android 9+ with Chrome 87+';
+            }
+        } else {
+            // Unknown device - show WebXR
+            if (quicklookBtn) quicklookBtn.style.display = 'none';
+            if (webxrBtn) webxrBtn.style.display = 'block';
+
+            if (compatMessage) {
+                compatMessage.textContent = 'Using WebXR';
+            }
+            if (compatDetails) {
+                compatDetails.textContent = 'WebXR support required';
+            }
+        }
     }
 
     setupEventListeners() {

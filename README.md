@@ -51,24 +51,30 @@ A comprehensive augmented reality web application that visualizes safe ergonomic
 
 ### For Users
 
-1. **Check Device Compatibility**
-   - **iOS Users:** iOS 15.4+ with Safari - [**Enable WebXR first!**](IOS-SETUP.md)
-   - **Android Users:** Android 9+ with Chrome 87+ (works by default)
-   - Must use HTTPS connection
+**The app automatically detects your device and uses the best AR technology:**
 
-2. **Visit the Web App**
-   ```
-   https://salyafei.github.io/ergonomic-ar/
-   ```
+#### 📱 iPhone/iPad Users (iOS 12+)
+1. Visit: `https://salyafei.github.io/ergonomic-ar/`
+2. Tap **"View in AR (iOS Quick Look)"** button
+3. Your iPhone launches the native AR viewer automatically
+4. Point camera at your desk and tap to place zones
+5. **No settings, no flags, no WebXR needed!** ✅
 
-3. **Start AR Experience**
-   - Click "Start AR Experience"
-   - Allow camera access when prompted
-   - Point camera at your desk surface
-   - Tap anywhere to place ergonomic zones
-   - View zones overlaid on your desk in real-time!
+**Requirements:**
+- iPhone 6s or later, iPad (5th gen) or later
+- iOS 12 or later
+- Safari browser (required)
 
-**📱 iOS Users:** WebXR must be enabled in Safari settings. [See detailed iOS setup guide →](IOS-SETUP.md)
+#### 🤖 Android Users (Android 9+)
+1. Visit: `https://salyafei.github.io/ergonomic-ar/`
+2. Tap **"Start AR Experience (WebXR)"** button
+3. Allow camera access when prompted
+4. Point camera at your desk surface
+5. Tap anywhere to place ergonomic zones
+
+**Requirements:**
+- Android 9+ with Chrome 87+
+- WebXR support (enabled by default)
 
 ### For Developers
 

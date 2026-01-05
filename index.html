@@ -53,13 +53,19 @@
             </div>
 
             <div class="action-section">
-                <button id="start-ar-btn" class="primary-btn">Start AR Experience</button>
+                <!-- iOS AR Quick Look Button (shown for iOS devices) -->
+                <a id="quicklook-btn" rel="ar" href="models/desk-ergonomics.usdz" style="display: none;">
+                    <button class="primary-btn">📱 View in AR (iOS Quick Look)</button>
+                </a>
+
+                <!-- WebXR Button (shown for Android/other devices) -->
+                <button id="start-ar-btn" class="primary-btn">Start AR Experience (WebXR)</button>
             </div>
 
-            <div class="info-box">
+            <div class="info-box" id="device-info">
                 <h3>📱 Device Compatibility</h3>
-                <p>Works on iOS 15.4+ (Safari) and Android 9+ (Chrome 87+)</p>
-                <p class="small">Requires HTTPS, WebXR support, and camera access</p>
+                <p id="compat-message">Detecting your device...</p>
+                <p class="small" id="compat-details"></p>
             </div>
         </div>
     </div>

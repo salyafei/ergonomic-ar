@@ -1,8 +1,26 @@
 # iOS Safari Setup Guide for WebXR
 
-## Why You Need This
+## ⚠️ UPDATE: WebXR No Longer Needed on iOS!
 
-WebXR is an **experimental feature** in iOS Safari and needs to be manually enabled. Even if you have iOS 15.4 or later, WebXR won't work until you enable it in Safari settings.
+**Good news!** The app now uses **AR Quick Look** for iOS devices, which works natively without any WebXR settings.
+
+**What this means:**
+- ✅ Works on iOS 12+ (not just 15.4+)
+- ✅ No Feature Flags to enable
+- ✅ No WebXR setup required
+- ✅ Just tap the button and AR launches automatically!
+
+**This guide is kept for reference only** - you don't need to follow these steps anymore if you're using the current version of the app.
+
+---
+
+## Old WebXR Setup (Not Required Anymore)
+
+Below are the old instructions for enabling WebXR on iOS. **You don't need this anymore** - the app uses AR Quick Look instead, which works out of the box.
+
+### Why You Needed This (Before)
+
+WebXR was an **experimental feature** in iOS Safari that needed manual enablement. The app no longer uses WebXR on iOS.
 
 ## Step-by-Step Instructions
 

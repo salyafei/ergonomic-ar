@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Ergonomic Zones 3D Model</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        #canvas {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪑 Generate Ergonomic Zones 3D Model</h1>
+
+        <p>This tool creates a 3D model of the ergonomic desk zones for iOS AR Quick Look.</p>
+
+        <div id="canvas"></div>
+
+        <button onclick="generateModel()">Generate 3D Model</button>
+        <button onclick="downloadGLB()" id="download-btn" style="display:none;">Download GLB File</button>
+
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <div class="step">
+                <strong>Step 1:</strong> Click "Generate 3D Model" to create the zones
+            </div>
+            <div class="step">
+                <strong>Step 2:</strong> Click "Download GLB File" to save the model
+            </div>
+            <div class="step">
+                <strong>Step 3:</strong> Convert GLB to USDZ:
+                <ul>
+                    <li><strong>Option A (Mac):</strong> Use Reality Converter (free from Apple)</li>
+                    <li><strong>Option B (Online):</strong> Use <a href="https://products.aspose.app/3d/conversion/glb-to-usdz" target="_blank">Aspose GLB to USDZ Converter</a></li>
+                    <li><strong>Option C (Command line):</strong> Use <code>xcrun usdz_converter model.glb desk-ergonomics.usdz</code></li>
+                </ul>
+            </div>
+            <div class="step">
+                <strong>Step 4:</strong> Save the USDZ file as <code>desk-ergonomics.usdz</code> in the <code>models/</code> folder
+            </div>
+        </div>
+
+        <div id="status"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/examples/js/exporters/GLTFExporter.js"></script>
+
+    <script>
+        let scene, camera, renderer, model;
+        let exporter;
+
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, 800/400, 0.1, 1000);
+            camera.position.set(0, 2, 2);
+            camera.lookAt(0, 0, 0);
+
+            // Create renderer
+            const canvas = document.getElementById('canvas');
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(800, 400);
+            canvas.appendChild(renderer.domElement);
+
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 10, 5);
+            scene.add(directionalLight);
+
+            // Initialize exporter
+            exporter = new THREE.GLTFExporter();
+
+            animate();
+        }
+
+        function generateModel() {
+            // Clear existing model
+            if (model) {
+                scene.remove(model);
+            }
+
+            model = new THREE.Group();
+
+            // Create Primary Zone (Green)
+            const primaryGeom = new THREE.BoxGeometry(0.8, 0.02, 0.6);
+            const primaryMat = new THREE.MeshStandardMaterial({
+                color: 0x4CAF50,
+                transparent: true,
+                opacity: 0.7
+            });
+            const primaryZone = new THREE.Mesh(primaryGeom, primaryMat);
+            primaryZone.position.set(0, 0.01, -0.2);
+            model.add(primaryZone);
+
+            // Create Secondary Zone (Yellow Ring)
+            const secondaryGeom = new THREE.RingGeometry(0.6, 1.0, 32);
+            const secondaryMat = new THREE.MeshStandardMaterial({
+                color: 0xFFC107,
+                transparent: true,
+                opacity: 0.6,
+                side: THREE.DoubleSide
+            });
+            const secondaryZone = new THREE.Mesh(secondaryGeom, secondaryMat);
+            secondaryZone.rotation.x = -Math.PI / 2;
+            secondaryZone.position.set(0, 0.005, -0.2);
+            model.add(secondaryZone);
+
+            // Create Monitor Zone (Blue)
+            const monitorGeom = new THREE.BoxGeometry(0.6, 0.4, 0.05);
+            const monitorMat = new THREE.MeshStandardMaterial({
+                color: 0x2196F3,
+                transparent: true,
+                opacity: 0.7
+            });
+            const monitorZone = new THREE.Mesh(monitorGeom, monitorMat);
+            monitorZone.position.set(0, 0.2, -0.65);
+            model.add(monitorZone);
+
+            // Create Keyboard Zone (Green)
+            const keyboardGeom = new THREE.BoxGeometry(0.45, 0.02, 0.15);
+            const keyboardMat = new THREE.MeshStandardMaterial({
+                color: 0x4CAF50,
+                transparent: true,
+                opacity: 0.8
+            });
+            const keyboardZone = new THREE.Mesh(keyboardGeom, keyboardMat);
+            keyboardZone.position.set(0, 0.01, 0.05);
+            model.add(keyboardZone);
+
+            // Create Mouse Zone (Green)
+            const mouseGeom = new THREE.BoxGeometry(0.15, 0.02, 0.12);
+            const mouseZone = new THREE.Mesh(mouseGeom, keyboardMat);
+            mouseZone.position.set(0.3, 0.01, 0.05);
+            model.add(mouseZone);
+
+            // Create Warning Zone (Red)
+            const warningGeom = new THREE.BoxGeometry(1.8, 0.02, 0.4);
+            const warningMat = new THREE.MeshStandardMaterial({
+                color: 0xF44336,
+                transparent: true,
+                opacity: 0.5
+            });
+            const warningZone = new THREE.Mesh(warningGeom, warningMat);
+            warningZone.position.set(0, 0.005, 0.4);
+            model.add(warningZone);
+
+            scene.add(model);
+
+            document.getElementById('status').innerHTML = '<p style="color: green;">✅ 3D Model generated! You can now download it.</p>';
+            document.getElementById('download-btn').style.display = 'inline-block';
+        }
+
+        function downloadGLB() {
+            if (!model) {
+                alert('Please generate the model first!');
+                return;
+            }
+
+            document.getElementById('status').innerHTML = '<p style="color: blue;">⏳ Exporting GLB file...</p>';
+
+            exporter.parse(
+                model,
+                function (result) {
+                    const blob = new Blob([result], { type: 'application/octet-stream' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'ergonomic-zones.glb';
+                    link.click();
+
+                    document.getElementById('status').innerHTML = '<p style="color: green;">✅ GLB file downloaded! Now convert it to USDZ.</p>';
+                },
+                function (error) {
+                    console.error('Export error:', error);
+                    document.getElementById('status').innerHTML = '<p style="color: red;">❌ Export failed. Check console for details.</p>';
+                },
+                { binary: true }
+            );
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (model) {
+                model.rotation.y += 0.005;
+            }
+            renderer.render(scene, camera);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
