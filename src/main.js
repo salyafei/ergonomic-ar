@@ -88,8 +88,8 @@ function setupEventListeners(features) {
     // Check camera permission before navigating
     if (features.camera || features.webgl) {
       showLoadingOverlay();
-      // Navigate to AR scene
-      window.location.href = './scenes/surface-detection.html';
+      // Navigate to AR scene (Vite builds flatten to root)
+      window.location.href = './surface-detection.html';
     } else {
       showPermissionModal();
     }
