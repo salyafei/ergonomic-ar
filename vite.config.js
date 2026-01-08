@@ -10,26 +10,12 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser',
+    minify: 'esbuild', // Use esbuild instead of terser (faster, no extra deps)
 
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/index.html'),
-        surfaceDetection: resolve(__dirname, 'src/scenes/surface-detection.html'),
-      },
-
-      output: {
-        manualChunks: {
-          'aframe': ['aframe'],
-          'three': ['three'],
-        },
-      },
-    },
-
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
+        main: resolve(__dirname, 'index.html'),
+        'surface-detection': resolve(__dirname, 'surface-detection.html'),
       },
     },
   },

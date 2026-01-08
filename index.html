@@ -1,124 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Augmented reality application for visualizing safe ergonomic zones on your workplace desk">
-    <meta name="keywords" content="augmented reality, ergonomics, workplace health, AR, desk setup">
-    <meta name="author" content="Desk Ergonomics AR">
-    <meta name="theme-color" content="#667eea">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- Force HTTPS redirect for WebXR -->
-    <script>
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            location.replace('https:' + window.location.href.substring(window.location.protocol.length));
-        }
-    </script>
+  <!-- SEO & Social -->
+  <meta name="description" content="Production-ready WebAR starter for surface detection using A-Frame and WebXR">
+  <meta name="keywords" content="WebXR, AR, Augmented Reality, A-Frame, Surface Detection">
+  <meta name="author" content="">
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+  <!-- Theme -->
+  <meta name="theme-color" content="#667eea">
 
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="apple-touch-icon" href="icon-192.png">
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
 
-    <title>Desk Ergonomics AR - Surface Detection</title>
-    <link rel="stylesheet" href="styles.css">
+  <!-- Security: Content Security Policy -->
+  <!--
+    Recommended CSP for production:
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'nonce-RANDOM_NONCE';
+      style-src 'self' 'nonce-RANDOM_NONCE';
+      img-src 'self' data: blob:;
+      connect-src 'self';
+      font-src 'self' data:;
+      media-src 'self' blob:;
+      worker-src 'self' blob:;
+    ">
+  -->
+
+  <title>Ergonomic AR - WebXR Surface Detection</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./src/styles/global.css">
 </head>
 <body>
-    <!-- Landing Page -->
-    <div id="landing-page" class="page active">
-        <div class="container">
-            <div class="header">
-                <h1>🪑 Desk Ergonomics AR</h1>
-                <p class="subtitle">Visualize safe ergonomic zones on your desk</p>
-                <p class="subtitle" style="font-size: 0.9rem; opacity: 0.8;">✨ Surface detection - no markers needed!</p>
-            </div>
+  <!-- Landing Page -->
+  <div id="landing-page" class="page active">
+    <div class="container">
+      <header class="header">
+        <h1>🪑 Ergonomic AR</h1>
+        <p class="subtitle">WebXR Surface Detection Demo</p>
+        <p class="subtitle-small">Production-ready A-Frame + WebXR starter</p>
+      </header>
 
-            <div class="instructions">
-                <div class="step">
-                    <span class="step-number">1</span>
-                    <p>Point your camera at your desk surface</p>
-                </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <p>Tap anywhere to place ergonomic zones</p>
-                </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <p>View safe zones overlaid in real-time</p>
-                </div>
-            </div>
+      <!-- Device Status -->
+      <div id="device-status" class="info-box">
+        <h3>📱 Checking Device...</h3>
+        <p id="device-info">Detecting capabilities...</p>
+        <p class="small" id="browser-info"></p>
+      </div>
 
-            <div class="action-section">
-                <!-- iOS AR Quick Look Button (shown for iOS devices) -->
-                <a id="quicklook-btn" rel="ar" href="models/desk-ergonomics.usdz" style="display: none;">
-                    <button class="primary-btn">📱 View in AR (iOS Quick Look)</button>
-                </a>
-
-                <!-- WebXR Button (shown for Android/other devices) -->
-                <button id="start-ar-btn" class="primary-btn">Start AR Experience (WebXR)</button>
-            </div>
-
-            <div class="info-box" id="device-info">
-                <h3>📱 Device Compatibility</h3>
-                <p id="compat-message">Detecting your device...</p>
-                <p class="small" id="compat-details"></p>
-            </div>
+      <!-- Experience Cards -->
+      <div class="experience-grid">
+        <div class="card" id="surface-card">
+          <div class="card-icon">🎯</div>
+          <h2>Surface Detection</h2>
+          <p>Place 3D objects on detected real-world surfaces using WebXR hit-testing</p>
+          <button class="primary-btn" id="start-surface-btn" disabled>
+            Loading...
+          </button>
+          <p class="card-note" id="surface-note"></p>
         </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>📋 Requirements</h3>
+        <div class="requirement-list">
+          <div class="requirement" id="req-https">
+            <span class="status">⏳</span>
+            <span>HTTPS connection</span>
+          </div>
+          <div class="requirement" id="req-webgl">
+            <span class="status">⏳</span>
+            <span>WebGL support</span>
+          </div>
+          <div class="requirement" id="req-camera">
+            <span class="status">⏳</span>
+            <span>Camera permission</span>
+          </div>
+          <div class="requirement" id="req-webxr">
+            <span class="status">⏳</span>
+            <span>WebXR support (AR mode)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Notes -->
+      <div class="platform-notes">
+        <details>
+          <summary>Platform Compatibility Notes</summary>
+          <div class="note-content">
+            <h4>✅ Android Chrome (Recommended)</h4>
+            <ul>
+              <li>Full WebXR AR support</li>
+              <li>Surface detection and hit-testing</li>
+              <li>Android 9+ with Chrome 87+</li>
+            </ul>
+
+            <h4>⚠️ iOS Safari (Limited)</h4>
+            <ul>
+              <li>WebXR AR not fully supported</li>
+              <li>Fallback to simulated placement</li>
+              <li>iOS 12+ recommended</li>
+            </ul>
+
+            <h4>ℹ️ Desktop</h4>
+            <ul>
+              <li>3D viewer mode only</li>
+              <li>No AR features available</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>
+          <a href="https://github.com/salyafei/ergonomic-ar" target="_blank">
+            View on GitHub
+          </a>
+          |
+          <a href="./surface-detection.html">
+            Direct to AR Scene
+          </a>
+        </p>
+        <p class="small">Built with A-Frame & WebXR</p>
+      </footer>
     </div>
+  </div>
 
-    <!-- AR Experience Page -->
-    <div id="ar-page" class="page">
-        <div id="loading-screen" class="loading active">
-            <div class="spinner"></div>
-            <p id="loading-text">Initializing AR...</p>
-        </div>
+  <!-- Permission Modal -->
+  <div id="permission-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>📷 Camera Permission Required</h2>
+      <p>This AR experience needs camera access to detect surfaces and place objects.</p>
 
-        <!-- AR Canvas Container -->
-        <canvas id="ar-canvas"></canvas>
+      <div class="permission-guide">
+        <h3>iOS Safari:</h3>
+        <ol>
+          <li>Tap the "aA" icon in the address bar</li>
+          <li>Select "Website Settings"</li>
+          <li>Enable "Camera"</li>
+          <li>Reload the page</li>
+        </ol>
 
-        <!-- AR Controls Overlay -->
-        <div id="ar-controls" style="display: none;">
-            <button id="back-btn" class="control-btn">← Back</button>
-            <div id="surface-status" class="status-indicator">
-                <span class="status-dot"></span>
-                <span class="status-text">Detecting surface...</span>
-            </div>
-            <button id="reset-btn" class="control-btn">Reset</button>
-        </div>
+        <h3>Android Chrome:</h3>
+        <ol>
+          <li>Tap "Allow" when prompted</li>
+          <li>If blocked, tap the lock icon in address bar</li>
+          <li>Enable "Camera" permission</li>
+          <li>Reload the page</li>
+        </ol>
+      </div>
 
-        <!-- Tap Instructions -->
-        <div id="tap-instruction" style="display: none;">
-            <p>👆 Tap on your desk surface to place ergonomic zones</p>
-        </div>
-
-        <!-- Help Panel -->
-        <div id="help-panel">
-            <h3>📐 Ergonomic Zones</h3>
-            <div class="zone-info">
-                <span class="zone-color" style="background: #4CAF50;"></span>
-                <strong>Primary:</strong> Keyboard, mouse
-            </div>
-            <div class="zone-info">
-                <span class="zone-color" style="background: #FFC107;"></span>
-                <strong>Secondary:</strong> Documents
-            </div>
-            <div class="zone-info">
-                <span class="zone-color" style="background: #2196F3;"></span>
-                <strong>Monitor:</strong> Arm's length
-            </div>
-            <div class="zone-info">
-                <span class="zone-color" style="background: #F44336;"></span>
-                <strong>Warning:</strong> Too close
-            </div>
-        </div>
+      <button class="primary-btn" id="close-modal-btn">Got it</button>
     </div>
+  </div>
 
-    <!-- Three.js for 3D rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
-    <script src="ar-surface.js"></script>
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p id="loading-text">Loading AR experience...</p>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>

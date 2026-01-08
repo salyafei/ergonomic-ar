@@ -13,11 +13,11 @@
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
   <!-- Components -->
-  <script type="module" src="../components/tap-to-place.js"></script>
-  <script type="module" src="../components/ui-hints.js"></script>
-  <script type="module" src="../components/feature-detect.js"></script>
+  <script type="module" src="./src/components/tap-to-place.js"></script>
+  <script type="module" src="./src/components/ui-hints.js"></script>
+  <script type="module" src="./src/components/feature-detect.js"></script>
 
-  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="./src/styles/global.css">
   <style>
     /* AR-specific styles */
     .a-canvas {
@@ -302,7 +302,7 @@
 
   <!-- Scene Script -->
   <script type="module">
-    import '../components/feature-detect.js';
+    import './src/components/feature-detect.js';
 
     // Wait for scene to load
     const sceneEl = document.querySelector('#ar-scene');
@@ -355,7 +355,7 @@
 
     // Control buttons
     document.getElementById('back-btn').addEventListener('click', () => {
-      window.location.href = '../index.html';
+      window.location.href = './index.html';
     });
 
     document.getElementById('reset-btn').addEventListener('click', () => {
