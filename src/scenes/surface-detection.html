@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <title>Surface Detection - Ergonomic AR</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <!-- Components -->
+  <script type="module" src="../components/tap-to-place.js"></script>
+  <script type="module" src="../components/ui-hints.js"></script>
+  <script type="module" src="../components/feature-detect.js"></script>
+
+  <link rel="stylesheet" href="../styles/global.css">
+  <style>
+    /* AR-specific styles */
+    .a-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* AR UI Overlay */
+    .ar-ui-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
+      max-width: 90%;
+    }
+
+    .toast {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-success { border-left: 4px solid #10b981; }
+    .toast-warning { border-left: 4px solid #f59e0b; }
+    .toast-error { border-left: 4px solid #ef4444; }
+    .toast-info { border-left: 4px solid #3b82f6; }
+    .toast-tip { border-left: 4px solid #8b5cf6; }
+
+    /* Instruction panel */
+    .instruction-panel {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .instruction-panel.show {
+      opacity: 1;
+    }
+
+    .instruction-text {
+      margin: 0;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #6b7280;
+    }
+
+    .status-dot.status-active {
+      background: #10b981;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status-dot.status-inactive {
+      background: #ef4444;
+    }
+
+    .status-text {
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* AR Controls */
+    .ar-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      pointer-events: all;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .control-btn.danger {
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- A-Frame Scene -->
+  <a-scene
+    id="ar-scene"
+    webxr="requiredFeatures: hit-test,local-floor;
+           optionalFeatures: dom-overlay,unbounded;
+           overlayElement: #ar-ui-overlay;"
+    renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    loading-screen="enabled: false"
+    tap-to-place="enabled: true; useWebXR: true; scaleAnimation: true"
+    ui-hints>
+
+    <!-- Assets -->
+    <a-assets timeout="30000">
+      <!-- Ergonomic Zone Models -->
+      <!-- Replace with actual GLB models -->
+      <a-asset-item id="zone-primary" src="/assets/models/zone-primary.glb"></a-asset-item>
+      <a-asset-item id="zone-secondary" src="/assets/models/zone-secondary.glb"></a-asset-item>
+      <a-asset-item id="desk-model" src="/assets/models/desk.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- Camera -->
+    <a-camera position="0 1.6 0" look-controls="enabled: false"></a-camera>
+
+    <!-- Lights -->
+    <a-light type="ambient" intensity="0.8"></a-light>
+    <a-light type="directional" intensity="0.5" position="1 2 1"></a-light>
+
+    <!-- Template object to place (hidden until placed) -->
+    <!-- This is the object that will be cloned when user taps -->
+    <a-entity id="placement-template" data-template visible="false" position="0 0 0">
+      <!-- Ergonomic Zone Visualization -->
+      <a-entity>
+        <!-- Primary Zone (Green) - closest to user -->
+        <a-box
+          width="0.8"
+          height="0.02"
+          depth="0.6"
+          color="#4CAF50"
+          opacity="0.7"
+          transparent="true"
+          position="0 0.01 -0.2">
+        </a-box>
+
+        <!-- Secondary Zone (Yellow) - extended reach -->
+        <a-ring
+          radius-inner="0.6"
+          radius-outer="1.0"
+          color="#FFC107"
+          opacity="0.6"
+          transparent="true"
+          rotation="-90 0 0"
+          position="0 0.005 -0.2">
+        </a-ring>
+
+        <!-- Monitor Zone (Blue) - arm's length -->
+        <a-box
+          width="0.6"
+          height="0.4"
+          depth="0.05"
+          color="#2196F3"
+          opacity="0.7"
+          transparent="true"
+          position="0 0.2 -0.65">
+        </a-box>
+
+        <!-- Keyboard Zone (Green) -->
+        <a-box
+          width="0.45"
+          height="0.02"
+          depth="0.15"
+          color="#4CAF50"
+          opacity="0.8"
+          transparent="true"
+          position="0 0.01 0.05">
+        </a-box>
+
+        <!-- Mouse Zone (Green) -->
+        <a-box
+          width="0.15"
+          height="0.02"
+          depth="0.12"
+          color="#4CAF50"
+          opacity="0.8"
+          transparent="true"
+          position="0.3 0.01 0.05">
+        </a-box>
+
+        <!-- Warning Zone (Red) - too close -->
+        <a-box
+          width="1.8"
+          height="0.02"
+          depth="0.4"
+          color="#F44336"
+          opacity="0.5"
+          transparent="true"
+          position="0 0.005 0.4">
+        </a-box>
+
+        <!-- Labels (using a-text for simplicity) -->
+        <a-text
+          value="Primary\nZone"
+          align="center"
+          width="1"
+          color="#4CAF50"
+          position="0 0.05 -0.2"
+          rotation="-90 0 0">
+        </a-text>
+      </a-entity>
+    </a-entity>
+
+  </a-scene>
+
+  <!-- AR UI Overlay -->
+  <div id="ar-ui-overlay" class="ar-ui-overlay">
+    <!-- Toast container (created by ui-hints system) -->
+
+    <!-- AR Controls -->
+    <div class="ar-controls">
+      <button class="control-btn" id="back-btn">← Back</button>
+      <button class="control-btn danger" id="reset-btn">Reset</button>
+    </div>
+  </div>
+
+  <!-- Scene Script -->
+  <script type="module">
+    import '../components/feature-detect.js';
+
+    // Wait for scene to load
+    const sceneEl = document.querySelector('#ar-scene');
+    const uiSystem = sceneEl.systems['ui-hints'];
+
+    sceneEl.addEventListener('loaded', () => {
+      console.log('AR scene loaded');
+
+      // Show initial instruction
+      uiSystem.updateInstruction('Move your phone slowly to detect surfaces');
+      uiSystem.showInstructions();
+      uiSystem.updateStatus('Detecting surfaces...', 'active');
+    });
+
+    // Listen for WebXR session events
+    sceneEl.addEventListener('enter-vr', () => {
+      console.log('Entered AR mode');
+      uiSystem.showToast('AR mode activated', 'success');
+      uiSystem.updateStatus('AR Active', 'active');
+    });
+
+    sceneEl.addEventListener('exit-vr', () => {
+      console.log('Exited AR mode');
+      uiSystem.updateStatus('AR Inactive', 'inactive');
+    });
+
+    // Listen for tap-to-place events
+    sceneEl.addEventListener('surface-found', () => {
+      console.log('Surface detected');
+      uiSystem.updateInstruction('Tap to place ergonomic zones');
+      uiSystem.showHint('surfaceFound');
+      uiSystem.updateStatus('Surface detected', 'active');
+    });
+
+    sceneEl.addEventListener('surface-lost', () => {
+      console.log('Surface tracking lost');
+      uiSystem.updateInstruction('Move phone to detect surface');
+      uiSystem.showHint('surfaceLost');
+      uiSystem.updateStatus('Detecting...', 'inactive');
+    });
+
+    sceneEl.addEventListener('object-placed', (event) => {
+      console.log('Object placed:', event.detail);
+      uiSystem.showHint('objectPlaced');
+
+      if (event.detail.fallback) {
+        uiSystem.showToast('Using simulated placement (iOS fallback)', 'warning');
+      }
+    });
+
+    // Control buttons
+    document.getElementById('back-btn').addEventListener('click', () => {
+      window.location.href = '../index.html';
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      const tapToPlace = sceneEl.components['tap-to-place'];
+      if (tapToPlace) {
+        tapToPlace.clearAll();
+        uiSystem.showToast('All objects cleared', 'info');
+      }
+    });
+
+    // Check features on load
+    window.FeatureDetect.checkAll().then(features => {
+      console.log('Features:', features);
+
+      if (!features.webxr && features.platform.isIOS) {
+        uiSystem.showToast('iOS detected: Using fallback mode', 'warning', 5000);
+      }
+
+      if (!features.camera) {
+        uiSystem.showHint('cameraPermission');
+      }
+    });
+
+    // Handle errors
+    window.addEventListener('error', (event) => {
+      console.error('Error in AR scene:', event.error);
+      uiSystem.showToast('An error occurred. Try refreshing.', 'error', 5000);
+    });
+
+    // Visibility change (pause/resume)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.log('AR scene paused');
+      } else {
+        console.log('AR scene resumed');
+      }
+    });
+  </script>
+</body>
+</html>

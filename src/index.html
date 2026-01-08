@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- SEO & Social -->
+  <meta name="description" content="Production-ready WebAR starter for surface detection using A-Frame and WebXR">
+  <meta name="keywords" content="WebXR, AR, Augmented Reality, A-Frame, Surface Detection">
+  <meta name="author" content="">
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#667eea">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Security: Content Security Policy -->
+  <!--
+    Recommended CSP for production:
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'nonce-RANDOM_NONCE';
+      style-src 'self' 'nonce-RANDOM_NONCE';
+      img-src 'self' data: blob:;
+      connect-src 'self';
+      font-src 'self' data:;
+      media-src 'self' blob:;
+      worker-src 'self' blob:;
+    ">
+  -->
+
+  <title>Ergonomic AR - WebXR Surface Detection</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./styles/global.css">
+</head>
+<body>
+  <!-- Landing Page -->
+  <div id="landing-page" class="page active">
+    <div class="container">
+      <header class="header">
+        <h1>🪑 Ergonomic AR</h1>
+        <p class="subtitle">WebXR Surface Detection Demo</p>
+        <p class="subtitle-small">Production-ready A-Frame + WebXR starter</p>
+      </header>
+
+      <!-- Device Status -->
+      <div id="device-status" class="info-box">
+        <h3>📱 Checking Device...</h3>
+        <p id="device-info">Detecting capabilities...</p>
+        <p class="small" id="browser-info"></p>
+      </div>
+
+      <!-- Experience Cards -->
+      <div class="experience-grid">
+        <div class="card" id="surface-card">
+          <div class="card-icon">🎯</div>
+          <h2>Surface Detection</h2>
+          <p>Place 3D objects on detected real-world surfaces using WebXR hit-testing</p>
+          <button class="primary-btn" id="start-surface-btn" disabled>
+            Loading...
+          </button>
+          <p class="card-note" id="surface-note"></p>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>📋 Requirements</h3>
+        <div class="requirement-list">
+          <div class="requirement" id="req-https">
+            <span class="status">⏳</span>
+            <span>HTTPS connection</span>
+          </div>
+          <div class="requirement" id="req-webgl">
+            <span class="status">⏳</span>
+            <span>WebGL support</span>
+          </div>
+          <div class="requirement" id="req-camera">
+            <span class="status">⏳</span>
+            <span>Camera permission</span>
+          </div>
+          <div class="requirement" id="req-webxr">
+            <span class="status">⏳</span>
+            <span>WebXR support (AR mode)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Notes -->
+      <div class="platform-notes">
+        <details>
+          <summary>Platform Compatibility Notes</summary>
+          <div class="note-content">
+            <h4>✅ Android Chrome (Recommended)</h4>
+            <ul>
+              <li>Full WebXR AR support</li>
+              <li>Surface detection and hit-testing</li>
+              <li>Android 9+ with Chrome 87+</li>
+            </ul>
+
+            <h4>⚠️ iOS Safari (Limited)</h4>
+            <ul>
+              <li>WebXR AR not fully supported</li>
+              <li>Fallback to simulated placement</li>
+              <li>iOS 12+ recommended</li>
+            </ul>
+
+            <h4>ℹ️ Desktop</h4>
+            <ul>
+              <li>3D viewer mode only</li>
+              <li>No AR features available</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>
+          <a href="https://github.com/salyafei/ergonomic-ar" target="_blank">
+            View on GitHub
+          </a>
+          |
+          <a href="./scenes/surface-detection.html">
+            Direct to AR Scene
+          </a>
+        </p>
+        <p class="small">Built with A-Frame & WebXR</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Permission Modal -->
+  <div id="permission-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>📷 Camera Permission Required</h2>
+      <p>This AR experience needs camera access to detect surfaces and place objects.</p>
+
+      <div class="permission-guide">
+        <h3>iOS Safari:</h3>
+        <ol>
+          <li>Tap the "aA" icon in the address bar</li>
+          <li>Select "Website Settings"</li>
+          <li>Enable "Camera"</li>
+          <li>Reload the page</li>
+        </ol>
+
+        <h3>Android Chrome:</h3>
+        <ol>
+          <li>Tap "Allow" when prompted</li>
+          <li>If blocked, tap the lock icon in address bar</li>
+          <li>Enable "Camera" permission</li>
+          <li>Reload the page</li>
+        </ol>
+      </div>
+
+      <button class="primary-btn" id="close-modal-btn">Got it</button>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p id="loading-text">Loading AR experience...</p>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

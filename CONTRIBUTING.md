@@ -1,276 +1,232 @@
-# Contributing to Desk Ergonomics AR
+# Contributing to Ergonomic AR
 
-Thank you for your interest in contributing! This document provides guidelines and instructions for contributing to the Desk Ergonomics AR project.
+Thank you for your interest in contributing! This document provides guidelines for contributing to the project.
 
-## 🌟 How to Contribute
+## 📋 Code of Conduct
 
-There are many ways to contribute to this project:
+- Be respectful and inclusive
+- Provide constructive feedback
+- Focus on what is best for the community
+- Show empathy towards others
 
-- 🐛 Report bugs
-- 💡 Suggest new features
-- 📝 Improve documentation
-- 🔧 Submit bug fixes
-- ✨ Add new features
-- 🎨 Improve UI/UX
-- 🧪 Write tests
-- 🌍 Add translations
-
-## 🐛 Reporting Bugs
-
-Before creating a bug report:
-
-1. **Search existing issues** to avoid duplicates
-2. **Test on multiple devices** to confirm the issue
-3. **Gather information** about your environment
-
-When creating a bug report, include:
-
-- **Clear title** describing the issue
-- **Steps to reproduce** the problem
-- **Expected behavior** vs actual behavior
-- **Screenshots** or screen recordings
-- **Device information**:
-  - Device model
-  - OS version
-  - Browser and version
-- **Console errors** (if any)
-
-### Example Bug Report
-
-```markdown
-**Title**: AR zones not appearing on iPhone 12
-
-**Description**:
-The AR zones don't render when using Safari on iPhone 12 Pro.
-
-**Steps to Reproduce**:
-1. Open app on iPhone 12 Pro (iOS 15.1)
-2. Grant camera permission
-3. Point camera at Hiro marker
-4. Marker is detected but zones don't appear
-
-**Expected**: Zones should overlay on the desk
-**Actual**: Only marker detection indicator shows
-
-**Environment**:
-- Device: iPhone 12 Pro
-- OS: iOS 15.1
-- Browser: Safari 15.1
-
-**Console Errors**:
-```
-WebGL warning: ...
-```
-```
-
-## 💡 Suggesting Features
-
-Feature suggestions are welcome! Please:
-
-1. **Check existing issues** for similar suggestions
-2. **Describe the use case** clearly
-3. **Explain the benefit** to users
-4. **Consider implementation** complexity
-
-### Example Feature Request
-
-```markdown
-**Title**: Add standing desk height recommendations
-
-**Description**:
-Add AR visualization for optimal standing desk heights.
-
-**Use Case**:
-Many users have adjustable standing desks and need guidance
-on proper height settings for different postures.
-
-**Proposed Solution**:
-- Add vertical markers showing recommended heights
-- Include measurements in cm and inches
-- Show both sitting and standing configurations
-
-**Benefits**:
-- Helps users with standing desks
-- Promotes better ergonomics
-- Extends app functionality
-```
-
-## 🔧 Development Setup
+## 🚀 Getting Started
 
 ### Prerequisites
 
+- Node.js 18+ and npm 9+
 - Git
-- Text editor (VS Code recommended)
-- Web browser (Chrome or Safari)
-- Smartphone for testing
+- Modern browser for testing
 
-### Getting Started
+### Development Setup
 
 1. **Fork the repository**
-
-   Click "Fork" button on GitHub
-
-2. **Clone your fork**
-
    ```bash
+   # Click "Fork" on GitHub, then clone your fork
    git clone https://github.com/YOUR_USERNAME/ergonomic-ar.git
    cd ergonomic-ar
    ```
 
-3. **Create a branch**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
+3. **Create a feature branch**
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-4. **Make changes**
-
-   Edit files as needed
-
-5. **Test locally**
-
+4. **Start development server**
    ```bash
-   python -m http.server 8000
+   npm run dev
    ```
 
-6. **Test on mobile**
+## 💻 Development Workflow
 
-   Use your local IP: `http://YOUR_IP:8000`
+### Making Changes
 
-## 📝 Code Style Guidelines
+1. Make your changes in the appropriate files
+2. Test your changes locally
+3. Run linter and formatter:
+   ```bash
+   npm run lint
+   npm run format
+   ```
 
-### HTML
+4. Commit your changes:
+   ```bash
+   git add .
+   git commit -m "feat: add new feature"
+   ```
 
-- Use semantic HTML5 elements
-- Indent with 4 spaces
-- Add comments for complex sections
-- Keep accessibility in mind
+### Commit Message Format
 
-```html
-<!-- Good -->
-<a-box
-    id="primary-zone"
-    position="0 0.05 -0.2"
-    width="0.8"
-    height="0.02">
-</a-box>
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-<!-- Avoid -->
-<a-box id="primary-zone" position="0 0.05 -0.2" width="0.8" height="0.02"></a-box>
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation only
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+**Examples:**
+```
+feat(components): add rotation animation to placed objects
+fix(tap-to-place): correct hit-testing offset on iOS
+docs(readme): update installation instructions
+```
+
+### Testing
+
+Before submitting a PR, test on:
+
+1. **Desktop:**
+   - Chrome (latest)
+   - Firefox (latest)
+   - Safari (latest)
+
+2. **Mobile:**
+   - Android Chrome (87+)
+   - iOS Safari (12+)
+
+3. **Test AR Features:**
+   - Surface detection (Android)
+   - Fallback mode (iOS)
+   - Object placement
+   - Reset functionality
+
+## 🎨 Code Style
+
+### JavaScript/TypeScript
+
+- Use ES6+ features
+- Prefer `const` over `let`
+- Use arrow functions where appropriate
+- Add JSDoc comments for functions
+- Maximum line length: 100 characters
+
+### A-Frame Components
+
+```javascript
+/**
+ * Component Description
+ */
+AFRAME.registerComponent('component-name', {
+  schema: {
+    property: { type: 'string', default: 'value' }
+  },
+
+  init() {
+    // Initialize component
+  },
+
+  tick(time, deltaTime) {
+    // Update loop
+  },
+
+  remove() {
+    // Cleanup
+  }
+});
 ```
 
 ### CSS
 
-- Use meaningful class names
-- Group related properties
-- Add comments for complex styles
-- Prefer flexbox/grid over floats
+- Use CSS variables for theming
+- Mobile-first approach
+- Use semantic class names
+- Keep selectors specific but not overly nested
 
-```css
-/* Good */
-.primary-btn {
-    /* Layout */
-    padding: 18px 30px;
+### HTML
 
-    /* Typography */
-    font-size: 1.1rem;
-    font-weight: 600;
+- Use semantic HTML5 elements
+- Include ARIA labels where appropriate
+- Ensure proper meta tags
 
-    /* Visual */
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    border-radius: 12px;
+## 📦 Adding Features
 
-    /* Animation */
-    transition: all 0.3s ease;
-}
-```
+### New A-Frame Component
 
-### JavaScript
+1. Create file in `src/components/`
+2. Export component
+3. Import in scene
+4. Add documentation
+5. Add example usage
 
-- Use ES6+ features
-- Add JSDoc comments for functions
-- Use meaningful variable names
-- Handle errors gracefully
+### New 3D Model
 
-```javascript
-/**
- * Initializes the AR scene and sets up marker tracking
- * @returns {void}
- */
-initializeARScene() {
-    const scene = document.querySelector('a-scene');
+1. Optimize model (< 5MB)
+2. Use DRACO compression if possible
+3. Place in `public/assets/models/`
+4. Update assets in scene
+5. Add attribution if required
 
-    if (!scene) {
-        console.error('AR scene not found');
-        return;
-    }
+### New Scene
 
-    // Setup marker events...
-}
-```
+1. Create HTML file in `src/scenes/`
+2. Import required components
+3. Add to Vite config
+4. Link from index page
+5. Test thoroughly
 
-## 🧪 Testing Guidelines
+## 🐛 Reporting Bugs
+
+### Before Reporting
+
+- Check existing issues
+- Try latest version
+- Reproduce on clean install
+
+### Bug Report Should Include
+
+- **Description:** Clear description of the bug
+- **Steps to Reproduce:**
+  1. Step one
+  2. Step two
+  3. ...
+- **Expected Behavior:** What should happen
+- **Actual Behavior:** What actually happens
+- **Environment:**
+  - OS and version
+  - Browser and version
+  - Device (if mobile)
+  - Node version (for build issues)
+- **Screenshots/Videos:** If applicable
+- **Console Errors:** Any error messages
+
+## 💡 Feature Requests
+
+Feature requests are welcome! Please include:
+
+- **Use Case:** Why is this feature needed?
+- **Proposed Solution:** How should it work?
+- **Alternatives:** Other approaches considered
+- **Examples:** Similar features in other projects
+
+## 🔍 Pull Request Process
 
 ### Before Submitting
 
-Test your changes on:
+- [ ] Code follows style guidelines
+- [ ] Linter passes (`npm run lint`)
+- [ ] Formatter applied (`npm run format`)
+- [ ] Tested on multiple devices
+- [ ] Documentation updated
+- [ ] Commits follow conventional format
 
-- ✅ Desktop browser (Chrome/Safari)
-- ✅ iPhone (Safari)
-- ✅ Android (Chrome)
-- ✅ Different screen sizes
-- ✅ Different lighting conditions
-
-### Testing Checklist
-
-- [ ] App loads without errors
-- [ ] Camera permission requested
-- [ ] Marker detection works
-- [ ] AR zones render correctly
-- [ ] Controls function properly
-- [ ] Responsive on mobile
-- [ ] No console errors
-- [ ] Performance is acceptable
-
-## 📤 Submitting Changes
-
-### Pull Request Process
-
-1. **Update documentation** if needed
-
-2. **Test thoroughly** on multiple devices
-
-3. **Commit your changes**
-
-   ```bash
-   git add .
-   git commit -m "Add feature: your feature description"
-   ```
-
-   **Commit Message Format**:
-   ```
-   Add feature: brief description
-
-   - Detailed point 1
-   - Detailed point 2
-   - Fixes #issue_number
-   ```
-
-4. **Push to your fork**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-5. **Create Pull Request**
-
-   - Go to original repository
-   - Click "New Pull Request"
-   - Select your branch
-   - Fill out the template
-   - Submit
-
-### Pull Request Template
+### PR Template
 
 ```markdown
 ## Description
@@ -279,95 +235,83 @@ Brief description of changes
 ## Type of Change
 - [ ] Bug fix
 - [ ] New feature
+- [ ] Breaking change
 - [ ] Documentation update
-- [ ] Performance improvement
 
 ## Testing
-- [ ] Tested on iOS Safari
 - [ ] Tested on Android Chrome
-- [ ] Tested marker detection
-- [ ] Tested AR rendering
+- [ ] Tested on iOS Safari
+- [ ] Tested on Desktop
+- [ ] All checks passing
 
 ## Screenshots
-(if applicable)
+If applicable, add screenshots
 
 ## Related Issues
 Fixes #(issue number)
 ```
 
-## 🎨 Design Guidelines
+### Review Process
 
-### Colors
+1. Maintainer will review within 1-2 weeks
+2. Address any requested changes
+3. Once approved, PR will be merged
+4. Changes will be deployed automatically
 
-Use the established color scheme:
+## 📝 Documentation
 
-- **Primary**: `#667eea` - `#764ba2` (gradient)
-- **Success/Primary Zone**: `#4CAF50`
-- **Warning/Secondary Zone**: `#FFC107`
-- **Info/Monitor Zone**: `#2196F3`
-- **Error/Warning Zone**: `#F44336`
+### Updating README
 
-### Typography
+- Keep installation steps current
+- Add new features to features list
+- Update compatibility table
+- Add troubleshooting tips
 
-- **Headers**: System font stack
-- **Body**: 1rem base size
-- **Mobile**: Scale down 10-15%
+### Code Comments
 
-### Spacing
+```javascript
+/**
+ * Calculate placement position based on hit test result
+ * @param {XRHitTestResult} hit - Hit test result from WebXR
+ * @param {XRReferenceSpace} referenceSpace - WebXR reference space
+ * @returns {THREE.Vector3} Position in 3D space
+ */
+function calculatePosition(hit, referenceSpace) {
+  // Implementation
+}
+```
 
-- **Small**: 10px
-- **Medium**: 20px
-- **Large**: 40px
+## 🎯 Areas for Contribution
 
-## 🌍 Internationalization
+### High Priority
 
-To add a new language:
+- [ ] iOS WebXR improvements
+- [ ] Performance optimizations
+- [ ] Accessibility enhancements
+- [ ] More fallback modes
+- [ ] Better error handling
 
-1. Create `lang/[locale].json`
-2. Translate all strings
-3. Update language selector
-4. Test RTL if applicable
+### Medium Priority
 
-## 📚 Documentation
+- [ ] Additional example scenes
+- [ ] More UI themes
+- [ ] Localization/i18n
+- [ ] Advanced lighting
+- [ ] Shadows support
 
-When contributing:
+### Low Priority
 
-- Update README.md if adding features
-- Add inline code comments
-- Update SETUP.md for new setup steps
-- Include examples where helpful
+- [ ] Additional animations
+- [ ] Sound effects
+- [ ] Analytics integration
+- [ ] Social sharing
+- [ ] PWA enhancements
 
-## ⚖️ Code of Conduct
+## ❓ Questions?
 
-### Our Standards
-
-- Be respectful and inclusive
-- Accept constructive criticism
-- Focus on what's best for the community
-- Show empathy towards others
-
-### Unacceptable Behavior
-
-- Harassment or discrimination
-- Trolling or insulting comments
-- Publishing private information
-- Other unprofessional conduct
-
-## 📞 Getting Help
-
-Need help contributing?
-
-- **Questions**: Open a GitHub Discussion
-- **Issues**: Create a GitHub Issue
-- **Chat**: Join our community (if applicable)
-
-## 🏆 Recognition
-
-Contributors will be:
-
-- Listed in CONTRIBUTORS.md
-- Mentioned in release notes
-- Credited in documentation
+- **General Questions:** [Open a Discussion](https://github.com/salyafei/ergonomic-ar/discussions)
+- **Bug Reports:** [Open an Issue](https://github.com/salyafei/ergonomic-ar/issues)
+- **Security Issues:** Email [security contact] (do not open public issue)
 
 ## 📄 License
 
@@ -375,6 +319,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-**Thank you for contributing to Desk Ergonomics AR! 🎉**
-
-Your contributions help create healthier workspaces for everyone.
+Thank you for contributing to Ergonomic AR! 🎉

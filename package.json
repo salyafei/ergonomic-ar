@@ -1,47 +1,56 @@
 {
   "name": "ergonomic-ar",
-  "version": "1.0.0",
-  "description": "Augmented reality web application for visualizing safe ergonomic zones on workplace desks",
-  "main": "index.html",
+  "version": "2.0.0",
+  "description": "Production-ready WebAR starter for surface detection using A-Frame and WebXR - visualize ergonomic zones on workplace desks",
+  "type": "module",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "serve": "npx serve .",
-    "deploy": "gh-pages -d ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.ts",
+    "format": "prettier --write \"src/**/*.{js,ts,html,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts,html,css,json}\""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/ergonomic-ar.git"
+    "url": "https://github.com/salyafei/ergonomic-ar.git"
   },
   "keywords": [
+    "webxr",
+    "ar",
     "augmented-reality",
-    "webAR",
+    "aframe",
+    "threejs",
+    "surface-detection",
+    "webgl",
     "ergonomics",
     "workplace-health",
-    "ar.js",
-    "aframe",
-    "desk-setup",
-    "office-ergonomics",
-    "health-tech",
-    "qr-code"
+    "desk-setup"
   ],
-  "author": "Your Name",
+  "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/your-username/ergonomic-ar/issues"
+    "url": "https://github.com/salyafei/ergonomic-ar/issues"
   },
-  "homepage": "https://github.com/your-username/ergonomic-ar#readme",
-  "dependencies": {},
+  "homepage": "https://salyafei.github.io/ergonomic-ar/",
+  "dependencies": {
+    "aframe": "^1.5.0"
+  },
   "devDependencies": {
-    "gh-pages": "^6.1.0",
-    "serve": "^14.2.1"
+    "vite": "^5.0.0",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.1.1"
   },
   "browserslist": [
-    "iOS >= 11",
-    "Android >= 7",
-    "Chrome >= 67",
-    "Safari >= 11"
+    "iOS >= 12",
+    "Android >= 9",
+    "Chrome >= 87",
+    "Safari >= 12"
   ],
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

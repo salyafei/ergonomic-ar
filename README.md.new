@@ -1,0 +1,309 @@
+# 🪑 Ergonomic AR - Production WebXR Starter
+
+[![Deploy to GitHub Pages](https://github.com/salyafei/ergonomic-ar/actions/workflows/deploy.yml/badge.svg)](https://github.com/salyafei/ergonomic-ar/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+A production-ready WebAR starter built with **A-Frame** and **WebXR** for creating immersive augmented reality experiences on mobile browsers. Features surface detection, hit-testing, and comprehensive fallbacks for maximum device compatibility.
+
+**Live Demo:** [https://salyafei.github.io/ergonomic-ar/](https://salyafei.github.io/ergonomic-ar/)
+
+## ✨ Features
+
+- **🎯 WebXR Surface Detection** - Place 3D objects on real-world surfaces using plane detection
+- **📱 Cross-Platform** - Android Chrome (full WebXR) + iOS Safari (fallback mode)
+- **⚡ Vite Build System** - Fast development with hot module replacement
+- **🎨 A-Frame Components** - Modular, reusable AR components
+- **🔍 Feature Detection** - Automatic device capability detection with graceful fallbacks
+- **💬 UI Hints System** - Toast notifications and contextual guidance
+- **🚀 GitHub Actions CI/CD** - Automated deployment to GitHub Pages
+- **📐 Production Ready** - ESLint, Prettier, TypeScript support, CSP guidance
+
+## 🎬 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18+ and npm 9+
+- Modern browser (Chrome 87+, Safari 12+)
+- **For AR features:** Android 9+ with Chrome 87+ (iOS has limited support)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/salyafei/ergonomic-ar.git
+cd ergonomic-ar
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Visit `http://localhost:3000` to see the landing page.
+
+### Building for Production
+
+```bash
+# Build optimized production bundle
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+The built files will be in the `dist/` directory.
+
+## 📱 Platform Compatibility
+
+### ✅ Android Chrome (Recommended)
+
+- **Full WebXR support** with surface detection and hit-testing
+- **Requirements:** Android 9+ with Chrome 87+
+- **Experience:** Native AR with plane detection
+
+### ⚠️ iOS Safari (Limited)
+
+- **Fallback mode** using simulated placement
+- **Requirements:** iOS 12+ with Safari
+- **Limitations:** No native WebXR AR support (as of iOS 17)
+- **Experience:** Tap-to-place at fixed distance from camera
+
+### 🖥️ Desktop
+
+- **3D viewer mode** only
+- No AR features available
+- Useful for model preview and debugging
+
+## 🏗️ Project Structure
+
+```
+ergonomic-ar/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # GitHub Actions deployment
+├── src/
+│   ├── components/
+│   │   ├── feature-detect.js   # Device capability detection
+│   │   ├── tap-to-place.js     # AR placement component
+│   │   └── ui-hints.js         # Toast notifications & hints
+│   ├── scenes/
+│   │   └── surface-detection.html  # Main AR scene
+│   ├── styles/
+│   │   └── global.css          # Global styles
+│   ├── index.html              # Landing page
+│   └── main.js                 # Landing page logic
+├── public/
+│   ├── assets/
+│   │   └── models/             # 3D models (GLB format)
+│   ├── icons/                  # PWA icons
+│   └── manifest.json           # PWA manifest
+├── package.json
+├── vite.config.js              # Vite configuration
+├── .eslintrc.json              # ESLint configuration
+├── .prettierrc                 # Prettier configuration
+└── README.md
+```
+
+## 🎨 Usage
+
+### Adding Custom 3D Models
+
+1. **Prepare your model:**
+   - Export as `.glb` (GLTF Binary)
+   - Recommended: Use DRACO compression
+   - Keep file size < 5MB for mobile
+
+2. **Add to assets:**
+   ```bash
+   cp your-model.glb public/assets/models/
+   ```
+
+3. **Update the scene:**
+   ```html
+   <!-- In src/scenes/surface-detection.html -->
+   <a-assets>
+     <a-asset-item id="your-model" src="/assets/models/your-model.glb"></a-asset-item>
+   </a-assets>
+
+   <!-- In placement template -->
+   <a-entity data-template gltf-model="#your-model"></a-entity>
+   ```
+
+### Creating Custom AR Components
+
+```javascript
+// src/components/my-component.js
+AFRAME.registerComponent('my-component', {
+  schema: {
+    color: { type: 'color', default: '#fff' }
+  },
+
+  init() {
+    // Component initialization
+  },
+
+  tick(time, deltaTime) {
+    // Called every frame
+  }
+});
+```
+
+Then import in your scene:
+```html
+<script type="module" src="../components/my-component.js"></script>
+```
+
+## 🔧 Configuration
+
+### Vite Base Path
+
+For GitHub Pages deployment, update `vite.config.js`:
+
+```javascript
+export default defineConfig({
+  base: '/your-repo-name/',  // Match your repository name
+  // ...
+});
+```
+
+### Content Security Policy
+
+For production, add CSP meta tag in `index.html`:
+
+```html
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'nonce-RANDOM_NONCE' https://aframe.io;
+  style-src 'self' 'nonce-RANDOM_NONCE';
+  img-src 'self' data: blob:;
+  connect-src 'self';
+  font-src 'self' data:;
+  media-src 'self' blob:;
+  worker-src 'self' blob:;
+">
+```
+
+## 🚀 Deployment
+
+### GitHub Pages (Automated)
+
+1. **Enable GitHub Pages:**
+   - Go to repository Settings → Pages
+   - Source: "GitHub Actions"
+
+2. **Push to main branch:**
+   ```bash
+   git push origin main
+   ```
+
+3. **GitHub Actions will:**
+   - Install dependencies
+   - Run linter
+   - Build production bundle
+   - Deploy to `gh-pages`
+
+Your site will be live at: `https://username.github.io/ergonomic-ar/`
+
+### Manual Deployment
+
+```bash
+npm run build
+# Upload the dist/ folder to your hosting provider
+```
+
+## 📝 Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server on port 3000 |
+| `npm run build` | Build production bundle |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Lint code with ESLint |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check code formatting |
+
+## 🎯 Performance Optimization
+
+### Model Optimization
+
+```bash
+# Install gltf-pipeline
+npm install -g gltf-pipeline
+
+# Compress with DRACO
+gltf-pipeline -i model.glb -o model-compressed.glb -d
+```
+
+### Image Optimization
+
+- Use WebP format for textures
+- Maximum texture size: 2048x2048
+- Power-of-two dimensions (512, 1024, 2048)
+
+### Lazy Loading
+
+Models are loaded only when needed:
+```javascript
+// In A-Frame assets
+<a-assets timeout="30000">
+  <a-asset-item id="model" src="/assets/models/model.glb"></a-asset-item>
+</a-assets>
+```
+
+## 🐛 Troubleshooting
+
+### Camera Permission Denied
+
+**iOS:**
+1. Tap "aA" in address bar
+2. Website Settings → Camera → Allow
+3. Reload page
+
+**Android:**
+1. Tap lock icon in address bar
+2. Permissions → Camera → Allow
+3. Reload page
+
+### WebXR Not Supported (iOS)
+
+This is expected. iOS Safari doesn't fully support WebXR AR. The app automatically falls back to simulated placement mode.
+
+### Build Errors
+
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear Vite cache
+rm -rf node_modules/.vite
+npm run dev
+```
+
+## 📚 Resources
+
+- [A-Frame Documentation](https://aframe.io/docs/)
+- [WebXR Device API](https://www.w3.org/TR/webxr/)
+- [Vite Documentation](https://vitejs.dev/)
+- [Three.js Documentation](https://threejs.org/docs/)
+
+## 🤝 Contributing
+
+Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [A-Frame](https://aframe.io/)
+- Powered by [Three.js](https://threejs.org/)
+- Bundled with [Vite](https://vitejs.dev/)
+
+---
+
+**Made with ❤️ for the WebAR community**
+
+For questions or issues, please [open an issue](https://github.com/salyafei/ergonomic-ar/issues).
